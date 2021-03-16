@@ -14,7 +14,6 @@
 	"author": "cvelez <christian.velez55@gmail.com>",
 	"license": "MIT",
 	"dependencies": {
-		"bignum": "^0.13.1",
 		"binary-parser": "^1.6.2",
 		"ejs": "^2.7.4",
 		"lodash": "^4.17.15",

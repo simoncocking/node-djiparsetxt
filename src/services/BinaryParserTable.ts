@@ -1,4 +1,3 @@
-import bignum = require("bignum");
 import { Parser } from "binary-parser";
 import { ILazyLoadingEntry } from "../shared/interfaces";
 import { Version } from "../common/Version";
@@ -31,9 +30,6 @@ export interface IParserLookUpTable {
 	[type: string]: ILazyLoadingEntry;
 }
 
-export function bignum_convert_buffer(buffer: any): bignum {
-	return bignum.fromBuffer(buffer as Buffer, { endian: "little", size: 8 });
-}
 
 export const PARSER_TABLE: IParserLookUpTable = {
 	header: {
@@ -110,7 +106,7 @@ export const PARSER_TABLE: IParserLookUpTable = {
 			dummy.parse = (buf: Buffer): any => {
 				const parsed = dummy.parser.parse(buf);
 				parsed.app_type = DETAILS_APP_TYPE[parsed.app_type] || NO_MATCH;
-				const timestamp = bignum_convert_buffer(parsed.timestamp);
+				const timestamp = BigInt(parsed.timestamp);
 				parsed.timestamp = new Date(parseInt(timestamp.toString())).toISOString();
 				parsed.app_version = new Version(parsed.app_version);
 				return parsed;
@@ -216,11 +212,9 @@ export const PARSER_TABLE: IParserLookUpTable = {
 					.buffer("updateTime", { length: 8 }),
 			};
 
-			// override the parse method to also convert the buffer
-			// into a bignum obj
 			dummy.parse = (buf: Buffer): any => {
 				const parsed = dummy.parser.parse(buf);
-				const updateTime = bignum_convert_buffer(parsed.updateTime);
+				const updateTime = BigInt(parsed.updateTime);
 				parsed.updateTime = new Date(parseInt(updateTime.toString())).toISOString();
 				return parsed;
 			};

@@ -1,4 +1,3 @@
-#!/usr/bin/env node
 import ejs from "ejs";
 import fs from "fs";
 import _ from "lodash";
@@ -189,7 +188,7 @@ export function get_header(buf: Buffer): IHeaderInfo {
  */
 export async function get_kml(buf: Buffer, image?: string, removeNoSignalRecords: boolean = false): Promise<string> {
 	let filter = (row: IRowObject) => true;
-	
+
 	// if removeNoSignalRecords is set, we remove the frames with OSD.gps_level on zero.
 	if (removeNoSignalRecords) {
 		filter = (row: IRowObject) => row.OSD.gps_level !== 0;
@@ -218,7 +217,7 @@ export async function get_kml(buf: Buffer, image?: string, removeNoSignalRecords
 			homeCoordinates = location;
 		}
 	}
- 
+
 	const templateFilePath = path.join(__dirname, "/template/kml-template.ejs");
 	const kmlTemplate = fs.readFileSync(templateFilePath, "utf8");
 	const kml: string = await ejs.render(kmlTemplate, {
